@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus | User Settings</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================
+           UI/UX COLOR VARIABLES (Deep Dark Theme)
+           ========================================= */
+        :root {
+            --bg-main: #050507;
+            --bg-sidebar: #0a0a0f;
+            --bg-card: rgba(20, 20, 25, 0.7);
+            --bg-card-hover: rgba(30, 30, 40, 0.9);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            
+            --accent-cyan: #00f2fe;
+            --accent-purple: #4facfe;
+            --border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* =========================================
+           GLOBAL STYLES & POS LAYOUT
+           ========================================= */
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            height: 100vh; /* Locks height for POS feel */
+            overflow: hidden;
+            display: flex;
+        }
+
+        * {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-sizing: border-box;
+        }
+
+        /* =========================================
+           LEFT SIDEBAR (Navigation)
+           ========================================= */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            box-shadow: 5px 0 25px rgba(0,0,0,0.5);
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            letter-spacing: 1px;
+            display: block;
+        }
+
+        /* --- NEW HOME BUTTON STYLING --- */
+        .btn-home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-home:hover {
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.2);
+            transform: translateX(3px);
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 20px 15px;
+            overflow-y: auto;
+        }
+
+        .nav-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin: 15px 0 10px 15px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--text-secondary);
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .nav-item i {
+            width: 25px;
+            font-size: 1.1rem;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        /* Active Tab Styling */
+        .nav-item.active {
+            background: rgba(0, 242, 254, 0.1);
+            color: var(--accent-cyan);
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #000;
+        }
+
+        /* =========================================
+           RIGHT MAIN CONTENT
+           ========================================= */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: radial-gradient(circle at top right, rgba(0, 242, 254, 0.05), transparent 40%);
+        }
+
+        .top-header {
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(5, 5, 7, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .top-header h3 {
+            margin: 0;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .btn-save {
+            background: linear-gradient(45deg, var(--accent-cyan), var(--accent-purple));
+            border: none;
+            color: #000;
+            font-weight: 600;
+            padding: 10px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 242, 254, 0.4);
+            color: #000;
+        }
+
+        /* Panels Container */
+        .panels-wrapper {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .setting-panel {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .setting-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* =========================================
+           SETTINGS CARDS & INPUTS
+           ========================================= */
+        .settings-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .settings-card h5 { margin-bottom: 5px; font-weight: 600; }
+        .settings-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px; }
+        
+        .custom-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 12px 15px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .custom-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 242, 254, 0.1);
+        }
+
+        /* iOS Style Toggle Switch */
+        .setting-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .setting-row:first-of-type { border-top: none; }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255,255,255,0.1); border-radius: 34px; transition: .4s;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px;
+            background-color: white; border-radius: 50%; transition: .4s;
+        }
+        .toggle-switch input:checked + .slider { background-color: var(--accent-cyan); }
+        .toggle-switch input:checked + .slider:before { transform: translateX(24px); }
+
+        /* Toast Notification */
+        #toast {
+            position: fixed;
+            bottom: 30px;
+            right: -300px;
+            background: #1e293b;
+            border: 1px solid var(--accent-cyan);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 9999;
+        }
+        #toast.show { right: 30px; }
+    </style>
+</head>
+<body>
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="brand"><i class="fa-solid fa-network-wired me-2"></i>NEXUS</a>
+            
+            <!-- NEW HOME/DASHBOARD BUTTON -->
+            <a href="index.html" class="btn-home">
+                <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <div class="nav-menu">
+            <div class="nav-title">User Settings</div>
+            
+            <div class="nav-item active" data-target="profile">
+                <i class="fa-regular fa-user"></i> My Profile
+            </div>
+            <div class="nav-item" data-target="appearance">
+                <i class="fa-solid fa-palette"></i> Appearance
+            </div>
+            <div class="nav-item" data-target="security">
+                <i class="fa-solid fa-shield-halved"></i> Security & Privacy
+            </div>
+
+            <div class="nav-title">System</div>
+
+            <div class="nav-item" data-target="notifications">
+                <i class="fa-regular fa-bell"></i> Notifications
+            </div>
+            <div class="nav-item" data-target="subscription">
+                <i class="fa-solid fa-chart-pie"></i> Plan & Usage
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-avatar">AD</div>
+            <div>
+                <div style="font-weight: 600; font-size: 0.9rem;">Alex Doe</div>
+                <div style="font-size: 0.8rem; color: var(--text-secondary);">Free Plan</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- RIGHT MAIN CONTENT -->
+    <main class="main-content">
+        <div class="top-header">
+            <h3 id="pageTitle">My Profile</h3>
+            <button class="btn btn-save" onclick="saveSettings()" id="saveBtn">Save Changes</button>
+        </div>
+
+        <div class="panels-wrapper">
+            
+            <!-- 1. PROFILE PANEL -->
+            <div class="setting-panel active" id="profile">
+                <div class="settings-card">
+                    <h5>Personal Information</h5>
+                    <p>Update your photo and personal details here.</p>
+                    
+                    <div class="row mb-3 mt-4">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-secondary small">First Name</label>
+                            <input type="text" class="custom-input" value="Hasanuzzaman">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-secondary small">Last Name</label>
+                            <input type="text" class="custom-input" value="Dipu Sir">
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label text-secondary small">Email Address</label>
+                            <input type="email" class="custom-input" value="dipu.cse@diu.edu.bd">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. APPEARANCE PANEL -->
+            <div class="setting-panel" id="appearance">
+                <div class="settings-card">
+                    <h5>Theme Preferences</h5>
+                    <p>Customize the look and feel of your dashboard.</p>
+                    
+                    <div class="setting-row">
+                        <div>
+                            <div style="font-weight: 600;">Dark Mode</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Keep the dark theme always on</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <div style="font-weight: 600;">Animations</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Enable UI animations and transitions</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. SECURITY PANEL -->
+            <div class="setting-panel" id="security">
+                <div class="settings-card">
+                    <h5>Account Security</h5>
+                    <p>Manage your password and authentication methods.</p>
+
+                    <div class="setting-row">
+                        <div>
+                            <div style="font-weight: 600;">Two-Factor Authentication (2FA)</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Protect your account with an extra security layer</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="setting-row">
+                        <div>
+                            <div style="font-weight: 600;">Change Password</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Last changed 3 months ago</div>
+                        </div>
+                        <button class="btn btn-outline-light btn-sm px-3 rounded-3" style="border-color: rgba(255,255,255,0.2);">Update</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. NOTIFICATIONS PANEL -->
+            <div class="setting-panel" id="notifications">
+                <div class="settings-card">
+                    <h5>Email Notifications</h5>
+                    <p>Choose what updates you want to receive.</p>
+
+                    <div class="setting-row">
+                        <div>
+                            <div style="font-weight: 600;">Task Completion</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Email me when a research agent finishes a job</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-row">
+                        <div>
+                            <div style="font-weight: 600;">Marketing & Updates</div>
+                            <div style="font-size: 0.85rem; color: var(--text-secondary);">Receive news about new features</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. SUBSCRIPTION PANEL -->
+            <div class="setting-panel" id="subscription">
+                <div class="settings-card" style="border-left: 4px solid var(--accent-cyan);">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h4 class="mb-1 text-white fw-bold">Free Plan</h4>
+                            <p class="mb-0" style="color: var(--accent-cyan);">Active</p>
+                        </div>
+                        <button class="btn btn-save" style="padding: 8px 20px;">Upgrade to Pro</button>
+                    </div>
+                    <hr style="border-color: rgba(255,255,255,0.1);">
+                    
+                    <div class="mt-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span style="font-size: 0.9rem;">Monthly Agent Tokens</span>
+                            <span style="font-size: 0.9rem; color: var(--text-secondary);">7,500 / 10,000</span>
+                        </div>
+                        <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                            <div style="width: 75%; height: 100%; background: var(--accent-cyan); border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Toast Component -->
+    <div id="toast">
+        <i class="fa-solid fa-circle-check" style="color: #00f2fe; font-size: 1.2rem;"></i>
+        <span>Settings successfully saved!</span>
+    </div>
+
+    <!-- JavaScript for Interactivity -->
+    <script>
+        // Tab Switching Logic
+        const navItems = document.querySelectorAll('.nav-item');
+        const panels = document.querySelectorAll('.setting-panel');
+        const pageTitle = document.getElementById('pageTitle');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all
+                navItems.forEach(nav => nav.classList.remove('active'));
+                panels.forEach(panel => panel.classList.remove('active'));
+
+                // Add active class to clicked nav
+                this.classList.add('active');
+
+                // Get target ID and show corresponding panel
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+
+                // Update Header Title
+                pageTitle.innerText = this.innerText;
+            });
+        });
+
+        // Save Button Animation & Toast Notification
+        function saveSettings() {
+            const btn = document.getElementById('saveBtn');
+            const toast = document.getElementById('toast');
+            
+            // Visual feedback on button
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+            btn.style.opacity = '0.8';
+            
+            setTimeout(() => {
+                // Reset button
+                btn.innerHTML = 'Save Changes';
+                btn.style.opacity = '1';
+                
+                // Show Toast
+                toast.classList.add('show');
+                
+                // Hide Toast after 3 seconds
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+                
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
